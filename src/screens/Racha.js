@@ -49,8 +49,8 @@ export default class Racha extends Component{
         if (this.state.showJoinRachas){
             visibleRachas = [...this.state.rachas]
         } else{
-            const noJoin = racha => racha.joinAt === false
-            visibleRachas = this.state.rachas.filter(noJoin)
+            const onJoin = racha => racha.joinAt === true
+            visibleRachas = this.state.rachas.filter(onJoin)
         }
         this.setState({visibleRachas})
     }
@@ -70,7 +70,7 @@ export default class Racha extends Component{
         const rachas = this.state.rachas.map(racha =>{
             if (racha.id == id){
               racha = {...racha}
-              racha.joinAt = racha.joinAt ? false : true  
+              racha.joinAt = racha.joinAt ? false: true 
             }
             return racha
         })
