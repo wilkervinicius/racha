@@ -11,20 +11,33 @@ import {
 } from 'react-native'
 import commonStyles from '../commonStyles'
 
-const initialState = {name: '', joinAt:false}
+
 
 
 export default class AddRacha extends Component{
-    state = {...initialState}
+
+    constructor(props){
+        super(props)
+        this.state = this.getInitialStage()
+
+    }
+    
+    
+    getInitialStage = () =>{
+        return {
+            nome:'',
+           // descricao: ''
+        }
+    }
 
     save = () => {
-        if (!this.state.name.trim()){
+        if (!this.state.nome.trim()){
             Alert.alert('Dados Invalidos','Informe nome de um Racha')
             return
         }
-        const date = {...this.state}
+        const data = {...this.state}
         this.props.onSave(data)
-        this.setState({...initialState})
+      
     }
 
 
@@ -32,17 +45,18 @@ export default class AddRacha extends Component{
         return(
             <Modal onRequestClose={this.props.onCancel}
                 visible = {this.props.isVisible}
-                animationType = 'slide' transparent={true}>
+                animationType = 'slide' transparent={true}
+                onShow = {() => this.setState({...this.getInitialStage()})}>
                 <TouchableWithoutFeedback onPress={this.props.onCancel}>
                     <View style={styles.offSet}></View>
                 </TouchableWithoutFeedback>
                 <View style={styles.container}>
                     <Text style={styles.header}>Novo Racha</Text>
-                    <TextInput placeholder='Nome...' style={styles.input} onChangeText={this.setState({name})}
-                        value={this.state.name} />                
+                    <TextInput placeholder='Nome...' style={styles.input} onChangeText={nome => this.setState({nome})}
+                        value={this.state.nome} />                
                      <View style={{flexDirection: 'row',justifyContent: 'flex-end'}}>
                         <TouchableOpacity onPress={this.props.onCancel}>
-                            <Text style={styles.button}>onCancel</Text>
+                            <Text style={styles.button}>Cancelar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.save}>
                             <Text style={styles.button}>Salvar</Text>
@@ -85,7 +99,7 @@ const styles = StyleSheet.create({
     input:{
         fontFamily: commonStyles.fontFamily,
         width:'90%',
-        heigth: 40,
+        height: 40,
         marginTop: 10,
         marginLeft: 10,
         backgroundColor: 'white',

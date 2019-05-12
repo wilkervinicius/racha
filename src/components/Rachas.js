@@ -9,11 +9,13 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import commonStyle from '../commonStyles'
+//import Swipeable from 'react-native-swipeable'
+
 
 //icon:futbol, share-alt
 export default props => {
     let check = false
-    if (props.joinAt !== true) {
+    if (props.joinAt !== null) {
         check = (            
             <Icon name="share-alt" size={20} />
         )
@@ -24,14 +26,33 @@ export default props => {
             
         )
     }  
+  /*
+    const descStyle = props.joinAt !== null ?
+    {  fontWeight: bold, color: 'blue' } : {}
+
   
+    const leftContent = (
+        <View style={styles.exclude}>
+            <Icon name='trash' size={20} color='#FFF' />
+            <Text style={styles.excludeText}>Excluir</Text>
+        </View>
+    )
   
+    const rightContent = [
+        <TouchableOpacity
+            style={[styles.exclude, { justifyContent: 'flex-start', paddingLeft: 20 }]}
+            onPress={() => props.onDelete(props.id)}>
+            <Icon name='trash' size={30} color='#FFF' />
+        </TouchableOpacity>,
+    ] */
     return(
-   
-        <View style={styles.container}>
+       // <Swipeable leftActionActivationDistance={200}
+       //   onLeftActionActivate={() => props.onDelete(props.id)}
+       //     leftContent={leftContent}>
+          <View style={styles.container}>
             <View>
                 <Text style={styles.description}>
-                    {props.name}
+                    {props.nome}
                 </Text>
             </View>
            
@@ -41,7 +62,8 @@ export default props => {
                 </View>
             </TouchableWithoutFeedback>
            
-        </View>
+     	  </View>
+       // </Swipeable>
     )
 
 }
@@ -65,7 +87,23 @@ const styles = StyleSheet.create({
     description:{
         fontFamily: commonStyle.fontFamily,
         color: commonStyle.colors.mainText,
-        fontSize: 15,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'blue'
         
-    }
+    },
+ /*   exclude: {
+        //flex: 1,
+        backgroundColor: 'red',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    }, 
+    excludeText: {
+        fontFamily: commonStyles.fontFamily,
+        color: '#FFF',
+        fontSize: 20,
+        margin: 10,
+    } */ 
+
 })

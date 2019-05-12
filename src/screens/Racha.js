@@ -10,6 +10,7 @@ import {
     
 }
 from 'react-native'
+import axios from  'axios'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import racha from '../../assets/imgs/racha.jpg'
@@ -17,42 +18,54 @@ import commonStyles from '../commonStyles'
 import Rachas  from '../components/Rachas'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ActionButton from 'react-native-action-button'
-//import AddRacha from './AddRachas'
+import AddRacha from './AddRachas'
+import { showError, server } from '../common';
+            
 
 export default class Racha extends Component{
     
     state = {
-        rachas:[
-            {id:Math.random(), name:'Veiteranos', joinAt:true},
-            {id:Math.random(), name:'Linhares',joinAt:true},
-            {id:Math.random(), name:'Bananas de Pijamas',joinAt:false},
-            {id:Math.random(), name:'ThunderCats',joinAt:false},
-        ],
+        rachas:[],
         visibleRachas:[],
         showJoinRachas: true,
         showAddRacha:false,
     }
 
-    addRacha = racha =>{
-        const rachas = [...this.state.rachas]
-        rachas.push({
-            id: Math.random(),
-            name: racha.name,
-            joinAt: false
-        })
-        this.setState({ rachas, showAddRacha: false }
-            , this.filterRachas)
+    addRacha = async racha =>{
+       try{ 
+           await axios.post(`${server}/racha/`,{
+               nome: racha.nome,
+             //  descricao: rachas.descricao
+           })
+           this.setState({showAddRacha:false}, this.loadRachas)
+
+       } catch (err) {
+            showError(err)
+       }
     }
+    /*
+    deleteRacha = async id => {
+    	 try { 
+              await axios.delete(`${server}/racha/${id}`)
+              await this.loadRachas()    
+         } catch (err) {
+            showError(err)
+         }
+    
+    } */		
 
     filterRachas = () => {
         let visibleRachas = null
         if (this.state.showJoinRachas){
             visibleRachas = [...this.state.rachas]
         } else{
-            const onJoin = racha => racha.joinAt === true
-            visibleRachas = this.state.rachas.filter(onJoin)
+            //const onJoin = racha => racha.joinAt === true
+            //visibleRachas = this.state.rachas.filter(onJoin)
+            visibleRachas = [...this.state.rachas]
+            
         }
         this.setState({visibleRachas})
+        
     }
 
     
@@ -62,7 +75,7 @@ export default class Racha extends Component{
     }
 
     componentDidMount = () => {
-        this.filterRachas()
+        this.loadRachas();
     }
 
 
@@ -70,7 +83,7 @@ export default class Racha extends Component{
         const rachas = this.state.rachas.map(racha =>{
             if (racha.id == id){
               racha = {...racha}
-              racha.joinAt = racha.joinAt ? false: true 
+           //   racha.joinAt = racha.joinAt ? false: true 
             }
             return racha
         })
@@ -79,11 +92,21 @@ export default class Racha extends Component{
 
     }
     
-    
+    loadRachas = async () => {
+        try {
+            res = await axios.get(`${server}/racha/`)
+            this.setState({rachas: res.data}, this.filterRachas)
+        } catch (err){
+            showError(err)
+        }    
+    }
     
     render(){
         return(
             <View style={styles.container}>
+                <AddRacha isVisible={this.state.showAddRacha}
+                    onSave={this.addRacha}
+                    onCancel={() => this.setState({ showAddRacha: false })} /> 
               
                 <ImageBackground source={racha} style={styles.background}>
                     <View style={styles.iconBar}>
@@ -104,9 +127,9 @@ export default class Racha extends Component{
                     <FlatList data={this.state.visibleRachas}
                         keyExtractor={item => `${item.id}`}   
                         renderItem={({ item }) => 
-                        <Rachas {...item} toggleRacha={this.toggleRacha}/>}/>
+                        <Rachas {...item} toggleRacha={this.toggleRacha}/>}/> 
                  <ActionButton buttonColor={commonStyles.colors.today}
-                    onPress={() => { this.setState({ showAddTask: true }) }} />   
+                    onPress={() => { this.setState({ showAddRacha: true }) }} />   
                 </View>
                 
             </View>
