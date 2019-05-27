@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import commonStyle from '../commonStyles'
-//import Swipeable from 'react-native-swipeable'
+import Swipeable from 'react-native-swipeable'
 
 
 //icon:futbol, share-alt
@@ -28,16 +28,16 @@ export default props => {
     }  
   /*
     const descStyle = props.joinAt !== null ?
-    {  fontWeight: bold, color: 'blue' } : {}
+    {  fontWeight: 'bold', color: 'blue' } : {}
 
-  
+  */
     const leftContent = (
         <View style={styles.exclude}>
             <Icon name='trash' size={20} color='#FFF' />
             <Text style={styles.excludeText}>Excluir</Text>
         </View>
     )
-  
+  /*
     const rightContent = [
         <TouchableOpacity
             style={[styles.exclude, { justifyContent: 'flex-start', paddingLeft: 20 }]}
@@ -46,9 +46,9 @@ export default props => {
         </TouchableOpacity>,
     ] */
     return(
-       // <Swipeable leftActionActivationDistance={200}
-       //   onLeftActionActivate={() => props.onDelete(props.id)}
-       //     leftContent={leftContent}>
+        <Swipeable leftActionActivationDistance={200}
+            onLeftActionActivate={() => props.onDelete(props.id)}
+            leftContent={leftContent}>
           <View style={styles.container}>
             <View>
                 <Text style={styles.description}>
@@ -63,7 +63,7 @@ export default props => {
             </TouchableWithoutFeedback>
            
      	  </View>
-       // </Swipeable>
+        </Swipeable>
     )
 
 }
@@ -92,18 +92,18 @@ const styles = StyleSheet.create({
         color: 'blue'
         
     },
- /*   exclude: {
-        //flex: 1,
+    exclude: {
+        
         backgroundColor: 'red',
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
     }, 
     excludeText: {
-        fontFamily: commonStyles.fontFamily,
+        fontFamily: commonStyle.fontFamily,
         color: '#FFF',
         fontSize: 20,
         margin: 10,
-    } */ 
+    }  
 
 })

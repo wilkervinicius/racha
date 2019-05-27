@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import ActionButton from 'react-native-action-button'
 import AddRacha from './AddRachas'
 import { showError, server } from '../common';
+
             
 
 export default class Racha extends Component{
@@ -43,16 +44,17 @@ export default class Racha extends Component{
             showError(err)
        }
     }
-    /*
+    
     deleteRacha = async id => {
     	 try { 
-              await axios.delete(`${server}/racha/${id}`)
-              await this.loadRachas()    
+              await axios.delete(`${server}/racha/${id}/`)
+              await this.loadRachas()
+
          } catch (err) {
             showError(err)
          }
     
-    } */		
+    } 		
 
     filterRachas = () => {
         let visibleRachas = null
@@ -127,7 +129,8 @@ export default class Racha extends Component{
                     <FlatList data={this.state.visibleRachas}
                         keyExtractor={item => `${item.id}`}   
                         renderItem={({ item }) => 
-                        <Rachas {...item} toggleRacha={this.toggleRacha}/>}/> 
+                        <Rachas {...item} toggleRacha={this.toggleRacha}
+                                onDelete={this.deleteRacha}/>}/> 
                  <ActionButton buttonColor={commonStyles.colors.today}
                     onPress={() => { this.setState({ showAddRacha: true }) }} />   
                 </View>
